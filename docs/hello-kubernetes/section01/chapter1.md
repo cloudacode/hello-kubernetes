@@ -1,7 +1,3 @@
-# Kubernetes 이해하기
+# Container 이해
 
-## Kubernetes 란?
-
-## Kubernetes는 왜 어려운가?
-
-## Architecture
+## Container 란?

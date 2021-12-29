@@ -1,5 +1,5 @@
 # Project information
-site_name: CLOUDACODE - kubernetes
+site_name: CLOUDACODE - Hello, Kubernetes
 site_url: https://cloudacode.com/hello-kubernetes/
 site_author: KC Chang
 
@@ -31,6 +31,8 @@ nav:
   - Hello, Kubernetes:
     - Section 1:
       - hello-kubernetes/section01/chapter1.md
+      - hello-kubernetes/section01/chapter2.md
+      - hello-kubernetes/section01/chapter3.md
   #   - Kubernetes:
   #   - CNCF:
   #   - ETC:

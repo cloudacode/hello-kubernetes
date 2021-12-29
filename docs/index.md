@@ -1,4 +1,4 @@
-# Welcome to Cloudacode - Kubernetes
+# Welcome to Cloudacode - Hello, Kubernetes
 
 ## Hello, Kubernetes Project 🚀
 
