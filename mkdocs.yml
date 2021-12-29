@@ -1,0 +1,38 @@
+# Project information
+site_name: CLOUDACODE - kubernetes
+site_url: https://cloudacode.com/hello-kubernetes/
+site_author: KC Chang
+
+# Repository
+repo_name: cloudacode/hello-kubernetes
+repo_url: https://github.com/cloudacode/hello-kubernetes
+edit_uri: ""
+
+# Configuration
+theme:
+  name: material
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight
+
+# Page tree
+nav:
+  - Home: index.md
+  - Hello, Kubernetes:
+    - Section 1:
+      - hello-kubernetes/section01/chapter1.md
+  #   - Kubernetes:
+  #   - CNCF:
+  #   - ETC:
+  - Blog ⧉: https://medium.com/@cloudacode
+  - Youtube ⧉: https://www.youtube.com/channel/UCw46J_QQ3-HrjPsSsuOSDdQ
