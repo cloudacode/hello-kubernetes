@@ -11,6 +11,8 @@ edit_uri: ""
 # Configuration
 theme:
   name: material
+  logo: assets/application-brackets-outline.png
+  favicon: assets/application-brackets-black.png
   palette:
     - scheme: default
       toggle:
