@@ -1,5 +1,5 @@
 # Project information
-site_name: CLOUDACODE - Hello, Kubernetes
+site_name: Hello! Kubernetes
 site_url: https://cloudacode.com/hello-kubernetes/
 site_author: KC Chang
 
@@ -27,14 +27,20 @@ markdown_extensions:
 
 # Page tree
 nav:
-  - Home: index.md
-  - Hello, Kubernetes:
-    - Section 1:
-      - hello-kubernetes/section01/chapter1.md
-      - hello-kubernetes/section01/chapter2.md
-      - hello-kubernetes/section01/chapter3.md
+  - Welcome: index.md
+  - Get started:
+    - hello-kubernetes/section01/s1-c1.md
+    - hello-kubernetes/section01/s1-c2.md
+    - hello-kubernetes/section01/s1-h1.md
+  - Fundamentals:
+    - hello-kubernetes/section02/s2-c1.md
+    - hello-kubernetes/section02/s2-c2.md
+    - hello-kubernetes/section02/s2-c3.md
+    - hello-kubernetes/section02/s2-c4.md
+    - hello-kubernetes/section02/s2-c5.md
+    - hello-kubernetes/section02/s2-h1.md
   #   - Kubernetes:
   #   - CNCF:
-  #   - ETC:
-  - Blog ⧉: https://medium.com/@cloudacode
-  - Youtube ⧉: https://www.youtube.com/channel/UCw46J_QQ3-HrjPsSsuOSDdQ
+  - 기타 자료:
+    - Blog ⧉: https://medium.com/@cloudacode
+    - Youtube ⧉: https://www.youtube.com/channel/UCw46J_QQ3-HrjPsSsuOSDdQ
