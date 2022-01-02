@@ -39,8 +39,11 @@ nav:
     - hello-kubernetes/section02/s2-c4.md
     - hello-kubernetes/section02/s2-c5.md
     - hello-kubernetes/section02/s2-h1.md
-  #   - Kubernetes:
-  #   - CNCF:
+  - Advanced:
+      - hello-kubernetes/section03/s3-c1.md
+      - hello-kubernetes/section03/s3-c2.md
+      - hello-kubernetes/section03/s3-c3.md
+  # - Production:
   - 기타 자료:
     - Blog ⧉: https://medium.com/@cloudacode
     - Youtube ⧉: https://www.youtube.com/channel/UCw46J_QQ3-HrjPsSsuOSDdQ
