@@ -1,8 +1,8 @@
-# Welcome to Cloudacode - Hello! Kubernetes
+# Welcome to 쿠버네티스 스쿨 by cloudacode
 
-## Hello, Kubernetes Project 🚀
+## 쿠버네티스 스쿨 Project 🚀
 
-`kubernetes` 를 이해하고 production level로 사용하는 방법에 대해 연구합니다.
+kubernetes를 이해하고 production level로 사용하기 위해 필요한 기술들을 연구합니다.
 
 ## Team 🧑‍🚀🙍👨‍🎓
 
