@@ -22,8 +22,10 @@ Kubernetes를 비롯해 유명한 도구 혹은 컴포넌트들로는 패키징 
 다양한 도구를 검토해보고 프러덕션에 적용해 보면서 이 정도의 컴포넌트는 쿠버네티스 구성 후 Week 1에 필수로 추가해야 한다고 생각하는 목록이다.
 ![k8s essential component](assets/k8s-essential-components.jpg)
 
-<div align="right">* <a href="https://miro.com/app/board/uXjVOVByMV0=/" target="_blank">상세 그림 보드 바로가기</a> <br>비밀번호: 카카오톡 채널 <a href="http://pf.kakao.com/_nxoaTs">클라우드어코드</a> 에서 확인 </div> 
-<!-- [상세 보드 링크](https://miro.com/app/board/uXjVOVByMV0=/), 비밀번호: 카카오톡 채널 [클라우드어코드](http://pf.kakao.com/_nxoaTs) 에서 확인 -->
+<div align="right">* <a href="https://miro.com/app/board/uXjVOVByMV0=/" target="_blank">상세 그림 보드 바로가기</a> <br>비밀번호: 클라우드어코드 카카오톡 채널 에서 확인  
+<br><a id="channel-add-button" href="http://pf.kakao.com/_nxoaTs">
+  <img src="../../assets/channel_add_small.png" alt="kakao channel add button"/>
+</a></div>
 
 ### 인그래스 컨트롤러
 
@@ -118,6 +120,17 @@ Ingress로 외부에서 들어오는 트레픽에 대한 제어를 하였다면 
 
 ## 마지막으로
 
-AWS Solution Architect 처럼 CNCF Landscape의 솔루션들을 Architecting 해주고 on-boarding도 시켜주는 사람이 있으면 좋겠으나 아쉽게도 그런 사람은 존재하지 않는다. (실제로는 있으나 내 주위에 없다!) 쿠버네티스 컨설팅 파트너라는 회사들이 생겨 나고 있으나 어느정도 역량을 보유하고 있는지는 표면상으로 확인 하기 어렵다. [Jetstack](https://www.jetstack.io/)이나 [WeaveWorks](https://www.weave.works/) 처럼 본인들의 솔루션을 계속 CNCF에 기여 하면서 컨설팅을 하는 회사가 그나마 역량이 있는 곳이라고 볼수 있다. 
+AWS Solution Architect 처럼 CNCF Landscape의 솔루션들을 Architecting 해주고 on-boarding도 시켜주는 사람이 있으면 좋겠으나 아쉽게도 그런 사람은 존재하지 않는다. (실제로는 있으나 내 주위에 없다!) 쿠버네티스 컨설팅 파트너라는 회사들이 생겨 나고 있으나 어느정도 역량을 보유하고 있는지는 표면상으로 확인 하기 어렵다. 개인적으로 [Jetstack](https://www.jetstack.io/)이나 [WeaveWorks](https://www.weave.works/) 처럼 본인들의 솔루션을 계속 CNCF에 기여 하면서 컨설팅을 하는 회사가 역량이 있는 곳이라고 생각한다. 
 
-항상 강조하는 것이지만 현재 트랜드인 도구만 도입한다고 끝이 아니며 서비스를 사용하는 사용자(stakeholder)들에게 요구사항 조사를 주기적으로 해서 시스템을 고도화시켜야 한다. 또한 같이 개발, 운영해 나가는 동료(placeholder)들과 정기적으로 시스템을 개선하고 함께 레벨업 해야지만 안정적으로 모던 인프라스트럭쳐를 발전시켜나갈 수 있을 것이다.
+마지막으로 항상 강조하는 것이지만 현재 트랜드인 도구만 도입한다고 끝이 아니며 서비스를 사용하는 사용자(stakeholder)들에게 요구사항 조사를 주기적으로 해서 시스템을 고도화시켜야 한다. 또한 같이 개발, 운영해 나가는 동료(placeholder)들과 정기적으로 시스템을 개선하고 함께 레벨업 해야지만 안정적으로 모던 인프라스트럭쳐를 발전시켜나갈 수 있을 것이다.
+
+<div>
+<a id="channel-add-button" href="http://pf.kakao.com/_nxoaTs">
+  <img src="../../assets/channel_add_small.png" alt="kakao channel add button"/>
+</a>
+<a class="github-button" href="https://github.com/cloudacode/hello-kubernetes" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star cloudacode/tutorials on GitHub">Star</a>
+</div>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+이 글이 유용하였다면 ⭐ Star를, 💬 1:1 질문이나 기술 관련 문의가 필요하신 분들은 클라우드어코드 카카오톡 채널 추가 부탁드립니다.🤗
