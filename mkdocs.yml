@@ -8,6 +8,12 @@ repo_name: cloudacode/hello-kubernetes
 repo_url: https://github.com/cloudacode/hello-kubernetes
 edit_uri: ""
 
+# Google Analytics
+extra:
+  analytics:
+    provider: google
+    property: G-L86XX3YR79
+
 # Configuration
 theme:
   name: material
@@ -47,6 +53,7 @@ nav:
       - hello-kubernetes/section03/s3-c2.md
       - hello-kubernetes/section03/s3-c3.md
   - 4. Production:
+      - hello-kubernetes/section04/k8-essential-components.md
       - Cloud Provider: 
         - hello-kubernetes/section04/s4-c1.md
         - hello-kubernetes/section04/s4-c2.md
