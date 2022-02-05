@@ -2,6 +2,9 @@
 site_name: 쿠브네티스 스쿨
 site_url: https://cloudacode.com/hello-kubernetes/
 site_author: KC Chang
+site_description: >-
+  Introduces the process of building various applications in the cloud environment 
+  and improving development procedures with DevOps culture.
 
 # Repository
 repo_name: cloudacode/hello-kubernetes
