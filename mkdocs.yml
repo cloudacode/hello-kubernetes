@@ -20,6 +20,7 @@ extra:
 # Configuration
 theme:
   name: material
+  custom_dir: overrides
   logo: assets/application-brackets-outline.png
   favicon: assets/application-brackets-black.png
   palette:
