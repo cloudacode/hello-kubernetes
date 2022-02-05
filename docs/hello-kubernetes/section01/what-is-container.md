@@ -1,3 +1,9 @@
+---
+title: 컨테이너란 무엇인가
+description: 쿠버네티스를 효과적으로 사용하기 위해서는 컨테이너 기술을 이해하는 것이 필요하다
+image: https://raw.githubusercontent.com/cloudacode/hello-kubernetes/main/docs/hello-kubernetes/section01/assets/container-run.png
+---
+
 # 1.1 Container 이해
 
 쿠버네티스를 효과적으로 사용하기 위해서는 컨테이너 기술을 이해하는 것이 필요하다.

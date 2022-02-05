@@ -2,17 +2,21 @@
 
 {% block extrahead %}
   {% set title = config.site_name %}
+  {% set description = config.site_description %}
+  {% set image = "https://raw.githubusercontent.com/cloudacode/hello-kubernetes/main/docs/assets/kubernetes-school.png" %}
   {% if page and page.meta and page.meta.title %}
-    {% set title = title ~ " - " ~ page.meta.title %}
+    {% set title = page.meta.title ~ " - " ~ title %}
+    {% set description = page.meta.description %}
+    {% set image = page.meta.image %}
   {% elif page and page.title and not page.is_homepage %}
-    {% set title = title ~ " - " ~ page.title %}
+    {% set title = page.title ~ " - " ~ title  %}
   {% endif %}
   <meta property="og:type" content="website" />
   <meta property="og:title" content="{{ title }}" />
-  <meta property="og:description" content="{{ config.site_description }}" />
+  <meta property="og:description" content="{{ description }}" />
   <meta property="og:url" content="{{ page.canonical_url }}" />
-  <meta property="og:image" content="https://raw.githubusercontent.com/cloudacode/hello-kubernetes/main/docs/assets/kubernetes-school.jpg" />
-  <meta property="og:image:type" content="image/jpg" />
+  <meta property="og:image" content="{{ image }}" />
+  <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 {% endblock %}

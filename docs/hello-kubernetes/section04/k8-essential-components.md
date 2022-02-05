@@ -1,3 +1,9 @@
+---
+title: 쿠버네티스 필수 컴포넌트 아키텍쳐
+description: 쿠버네티스를 효율적으로 사용하기 위한 필수 쿠버네티스 관리 컴포넌트에 대해서 알아보자 
+image: https://raw.githubusercontent.com/cloudacode/hello-kubernetes/main/docs/assets/kubernetes-essential-components.png
+---
+
 # Kubernetes Essential Component
 
 쿠버네티스를 효율적으로 사용하기 위해서는 필수 쿠버네티스 관리 컴포넌트들을 이해하고 구성할 필요가 있다.
