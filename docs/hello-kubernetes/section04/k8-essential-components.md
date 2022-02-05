@@ -1,6 +1,3 @@
-<meta property="og:image" content="https://raw.githubusercontent.com/cloudacode/hello-kubernetes/main/docs/assets/kubernetes-school.jpg" />
-<meta property="og:image:type" content="image/jpg" />
-
 # Kubernetes Essential Component
 
 쿠버네티스를 효율적으로 사용하기 위해서는 필수 쿠버네티스 관리 컴포넌트들을 이해하고 구성할 필요가 있다.

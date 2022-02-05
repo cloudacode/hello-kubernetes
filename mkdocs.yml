@@ -35,6 +35,7 @@ theme:
 markdown_extensions:
   - admonition
   - pymdownx.highlight
+  - meta
 
 # Page tree
 nav:
