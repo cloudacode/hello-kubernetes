@@ -1,7 +1,7 @@
 ---
 title: Ingress Controller on Kubernetes
-description: 엔진엑스 인그래스를 통해 쿠버네티스의 Layer7 레벨의 로드밸런싱을 구현 한다. 
-image: https://raw.githubusercontent.com/cloudacode/hello-kubernetes/main/docs/assets/ingress-controller-elb.jpg
+description: 엔진엑스 인그래스를 통해 쿠버네티스의 Layer 7 레벨의 로드 밸런싱을 구현 해 본다. 
+image: https://raw.githubusercontent.com/cloudacode/hello-kubernetes/main/docs/assets/kubernetes-ingress-controller.png
 ---
 
 # Ingress Controller
