@@ -59,11 +59,12 @@ nav:
       - hello-kubernetes/section03/s3-c3.md
   - 4. Production:
       - hello-kubernetes/section04/k8-essential-components.md
+      - hello-kubernetes/section04/ingress-nginx.md
       - Cloud Provider: 
         - hello-kubernetes/section04/s4-c1.md
         - hello-kubernetes/section04/s4-c2.md
       - Mgmt Service:
-        - hello-kubernetes/section04/s4-c3.md
+        - hello-kubernetes/section04/keda-hpa.md
         - hello-kubernetes/section04/s4-c4.md
   - 기타 자료:
     - Blog ⧉: https://medium.com/@cloudacode
