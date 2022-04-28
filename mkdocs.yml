@@ -45,7 +45,6 @@ nav:
   - 1. Get started:
     - hello-kubernetes/section01/what-is-container.md
     - hello-kubernetes/section01/what-is-kubernetes.md
-    - hello-kubernetes/section01/s1-c3.md
     - hello-kubernetes/section01/s1-h1.md
   - 2. Fundamentals:
     - hello-kubernetes/section02/s2-c1.md

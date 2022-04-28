@@ -1,7 +1,7 @@
 ---
 title: 1.2 쿠버네티스의 이해
 description: 쿠버네티스란 컨테이너화된 애플리케이션을 자동으로 배포, 확장, 관리해주는 오픈소스 시스템
-image: https://raw.githubusercontent.com/cloudacode/hello-kubernetes/main/docs/assets/container-run.png
+image: https://raw.githubusercontent.com/cloudacode/hello-kubernetes/main/docs/assets/kubernetes-school.png
 ---
 
 # 1.2 Kubernetes 이해
