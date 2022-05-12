@@ -47,7 +47,7 @@ nav:
     - hello-kubernetes/section01/what-is-kubernetes.md
     - hello-kubernetes/section01/install-kubernetes-eks.md
   - 2. Fundamentals:
-    - hello-kubernetes/section02/s2-c1.md
+    - hello-kubernetes/section02/pod-namespce.md
     - hello-kubernetes/section02/s2-c2.md
     - hello-kubernetes/section02/s2-c3.md
     - hello-kubernetes/section02/s2-c4.md
