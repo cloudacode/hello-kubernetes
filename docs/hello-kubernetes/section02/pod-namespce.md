@@ -1,6 +1,6 @@
 ---
 title: 2.1 Pod & Namespace
-description: 쿠버네티스란 컨테이너들을 Pod 로 관리가 되며 리소스의 집합을 Namespace로 논리적으로 격리 한다 
+description: 쿠버네티스에서는 컨테이너들을 Pod로 관리를 하며 리소스들을 논리적인 Namespace로 격리 한다 
 image: https://raw.githubusercontent.com/cloudacode/hello-kubernetes/main/docs/assets/kubernetes-school.png
 ---
 
