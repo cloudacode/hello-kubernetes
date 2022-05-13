@@ -49,7 +49,7 @@ nav:
   - 2. Fundamentals:
     - hello-kubernetes/section02/pod-namespce.md
     - hello-kubernetes/section02/s2-c2.md
-    - hello-kubernetes/section02/s2-c3.md
+    - hello-kubernetes/section02/service-ingress.md
     - hello-kubernetes/section02/s2-c4.md
     - hello-kubernetes/section02/s2-c5.md
     - hello-kubernetes/section02/s2-h1.md
