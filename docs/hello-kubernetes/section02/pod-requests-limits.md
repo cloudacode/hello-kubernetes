@@ -1,12 +1,13 @@
 ---
-title: 2.2 Resources and QoS
+title: 2.2 Resources & QoS
 description:
-image:
+image: https://raw.githubusercontent.com/cloudacode/hello-kubernetes/main/docs/assets/kubernetes-school.png
 ---
+
 # Resources
 쿠버네티스에서 사용자 application의 Pod을 정의할때, container가 사용하는 resource 양을 지정할수 있다. 대표적인 사전 정의된 resource는 cpu, memory가 있다. 그리고 이 resource는 pod(혹은 container)에 의해 요청/할당/소비가 가능하다.
 
-지정할수 있는 resource는 type을 가지고 type name(e.g cpu, memory)을 가지고 구분할수 있다. 여기서는  쿠버네티스에서 사전에 정의된 compute resource인 cpu, memory를 다룬다. resource type에는 측정 가능한 수량 및 단위가 있다.
+지정할수 있는 resource는 type을 가지고 type name(e.g cpu, memory)을 가지고 구분할수 있다. 여기서는 쿠버네티스에서 사전에 정의된 compute resource인 cpu, memory를 다룬다. resource type에는 측정 가능한 수량 및 단위가 있다.
 
 ## Resources specifications
 ### kubernetes에서 사전 정의된 resources
