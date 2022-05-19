@@ -1,7 +1,7 @@
 # Project information
 site_name: 쿠브네티스 스쿨
 site_url: https://cloudacode.com/hello-kubernetes/
-site_author: KC Chang
+site_author: kcfigaro@gmail.com, juner84s@gmail.com, steven.hj.shim@gmail.com
 site_description: >-
   Introduces the process of building various applications in the cloud environment
   and improving development procedures with DevOps culture.
@@ -45,19 +45,27 @@ nav:
   - 1. Get started:
     - hello-kubernetes/section01/what-is-container.md
     - hello-kubernetes/section01/what-is-kubernetes.md
-    - hello-kubernetes/section01/install-kubernetes-eks.md
+    - 핸즈온 실습:
+      - hello-kubernetes/section01/install-kubernetes-eks.md
   - 2. Fundamentals:
     - hello-kubernetes/section02/pod-namespce.md
     - hello-kubernetes/section02/pod-requests-limits.md
     - hello-kubernetes/section02/service-ingress.md
-    - hello-kubernetes/section02/s2-c4.md
-    - hello-kubernetes/section02/s2-c5.md
-    - hello-kubernetes/section02/s2-h1.md
+    - hello-kubernetes/section02/readiness-liveness-probe.md
+    - hello-kubernetes/section02/secrets-configmap.md
+    - 핸즈온 실습:
+      - hello-kubernetes/section02/handson/s2-h1.md
+      - hello-kubernetes/section02/handson/s2-h2.md
   - 3. Advanced:
-      - hello-kubernetes/section03/pod-resource-advanced.md
-      - hello-kubernetes/section03/s3-c1.md
-      - hello-kubernetes/section03/s3-c2.md
-      - hello-kubernetes/section03/s3-c3.md
+    - hello-kubernetes/section03/pod-resource-advanced.md
+    - hello-kubernetes/section03/s3-c1.md
+    - hello-kubernetes/section03/s3-c2.md
+    - hello-kubernetes/section03/s3-c3.md
+    - hello-kubernetes/section03/s3-c4.md
+    - hello-kubernetes/section03/s3-c5.md
+    - 핸즈온 실습:
+      - hello-kubernetes/section03/handson/s3-h1.md
+      - hello-kubernetes/section03/handson/s3-h2.md
   - 4. Production:
       - hello-kubernetes/section04/k8-essential-components.md
       - hello-kubernetes/section04/ingress-nginx.md

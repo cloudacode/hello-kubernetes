@@ -3,6 +3,7 @@ title: 3.1 Deep dive in k8s Pod resources
 description:
 image:
 ---
+
 ## Deep dive in k8s Pod resources
 ### 어떻게 kubernetes는 resource의 requests와 limits를 적용하는가?
 kubelet이 pod의 일부인 container를 실행할때, kubelet은 container의 cpu/memory의 requests와 limits를 container runtime(e.g. Docker)로 전달한다. Linux 시스템에서는 container에서 사용자가 정의한 수량의 resource를 적용하기 위해 kernel cgroups을 이용하여 구성한다.
