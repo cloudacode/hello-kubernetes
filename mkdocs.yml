@@ -3,7 +3,7 @@ site_name: 쿠브네티스 스쿨
 site_url: https://cloudacode.com/hello-kubernetes/
 site_author: KC Chang
 site_description: >-
-  Introduces the process of building various applications in the cloud environment 
+  Introduces the process of building various applications in the cloud environment
   and improving development procedures with DevOps culture.
 
 # Repository
@@ -36,7 +36,7 @@ theme:
 markdown_extensions:
   - admonition
   - pymdownx.highlight
-  - tables 
+  - tables
   - meta
 
 # Page tree
@@ -48,19 +48,21 @@ nav:
     - hello-kubernetes/section01/install-kubernetes-eks.md
   - 2. Fundamentals:
     - hello-kubernetes/section02/pod-namespce.md
+    - hello-kubernetes/section02/pod-requests-limits.md
     - hello-kubernetes/section02/s2-c2.md
     - hello-kubernetes/section02/service-ingress.md
     - hello-kubernetes/section02/s2-c4.md
     - hello-kubernetes/section02/s2-c5.md
     - hello-kubernetes/section02/s2-h1.md
   - 3. Advanced:
+      - hello-kubernetes/section03/pod-resource-advanced.md
       - hello-kubernetes/section03/s3-c1.md
       - hello-kubernetes/section03/s3-c2.md
       - hello-kubernetes/section03/s3-c3.md
   - 4. Production:
       - hello-kubernetes/section04/k8-essential-components.md
       - hello-kubernetes/section04/ingress-nginx.md
-      - Cloud Provider: 
+      - Cloud Provider:
         - hello-kubernetes/section04/s4-c1.md
         - hello-kubernetes/section04/s4-c2.md
       - Mgmt Service:
