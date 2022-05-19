@@ -8,8 +8,10 @@ image: https://raw.githubusercontent.com/cloudacode/hello-kubernetes/main/docs/a
 
 ## Service란
 
-쿠버네티스에서 서비스는 여러 개의 분산된 형태로 배포된 Pod 들을 하나의 엔드포인트로 접근할 수 있게 한 리소스이다. 서비스를 통해 pod에 접근할 수 있으며 서비스의 종류는 ClusterIP, NodePort, LoadBalancer, 그리고 Headless 타입이 존재 한다. Headless를 제외하고는 대표하는 IP가 내부 클러스터 IP 혹은, 외부 IP 주소를 사용하며 대표 IP로 요청이 오면 서비스에 있는 파드 중 하나로 라우팅이 된다. Type이 headless인 경우는 별도의 엔드포인트의 주소가 나오는 것이 아닌 서비스에 연결된 전체 Pod의 IP 목록이 호출된다.
+쿠버네티스에서 서비스는 여러 개의 분산된 형태로 배포된 Pod 들을 하나의 엔드포인트로 접근할 수 있게 한 리소스이다. 서비스를 통해 pod에 접근할 수 있으며 서비스의 종류는 ClusterIP, NodePort, LoadBalancer, 그리고 Headless 타입이 존재한다. 서비스 타입에 따서 내부 클러스터 IP 혹은 외부 IP 주소가 할당되며 서비스에 연동된(label이 매칭된) 파드 중 하나로 라우팅이 된다. 타입이 headless인 경우는 별도의 엔드포인트의 주소가 나오는 것이 아닌 서비스에 연결된 전체 Pod의 IP 목록이 호출된다.
 ![kubernetes-service](assets/kubernetes-service.jpg)
+서비스는 기본으로 노드에 있는 [iptables 프록시 모드](https://kubernetes.io/ko/docs/concepts/services-networking/service/#proxy-mode-iptables)로 동작하며 iptables 설정값으로 관리가 되며 정상적으로 수행되고 있는 백엔드 파드로만 연결된다. 또한 서비스는 namespace에 귀속이 되므로 다른 namespace에 있는 앱이 접근해야 하는 경우 `<service>.<namespace>.svc`로 접근할 수 있으며 서비스를 외부로 노출하고자 할 때는 NodePort, LoadBalancer, 그리고 아래서 따로 설명하는 Ingress를 사용하면 된다.
+<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/NFApeJRXos4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
 
 ### Service Type
 
@@ -18,14 +20,19 @@ image: https://raw.githubusercontent.com/cloudacode/hello-kubernetes/main/docs/a
 | ClusterIP  | 기본값이며 내부 클러스터 IP 주소를 할당 받아 서비스 | 
 | NodePort | Node의 Port 범위(30000-32767)중 하나가 할당이 되며 클라이언트가 해당 노드의 IP 주소와 할당된 Port로 서비스 |
 | LoadBalancer  | 클러스터에 구성된 네트워크 부하 분산기의 IP 혹은 클라우드의 경우 클러스터에 연동된 Cloud-Native LB의 IP 주소로 서비스 |
-| Headless  | 하나의 대표 IP 주소가 아닌 모든 Pod의 IP을 리스트로 제공 |
+| Headless  | 하나의 대표 IP 주소가 아닌 모든 Pod의 IP을 리스트로 제공, Zookeeper처럼 서버의 모든 IP를 알아야할 경우 적합 |
 
 #### ClusterIP
 
-type의 기본값이며 내부 클러스터 IP 주소를 할당 받아 서비스가 된다. 클러스터 내부의 다른 애플리케이션에서 ClusterIP로도 접근 가능하며 자동으로 클러스터 내부에 생성된 CNAME `my-svc.my-namespace.svc.cluster-domain.example`
+type의 기본값이며 내부 클러스터 IP 주소를 할당 받아 서비스가 된다. 클러스터 내부의 다른 애플리케이션에서 ClusterIP로도 접근 가능하며 자동으로 클러스터 내부에 생성된 CNAME `<service>.<namespace>.svc.<cluster_domain>`
 [DNS Records](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#services) 로도 접근 가능하다.
 
 ![kubernetes-service-clusterip](assets/kubernetes-service-clusterip.jpg)
+
+```bash
+kubectl run http --image=busybox --port=80
+
+```
 
 #### NodePort
 
