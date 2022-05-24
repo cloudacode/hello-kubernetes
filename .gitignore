@@ -66,3 +66,6 @@ ENV/
 
 # MkDocs documentation
 site/
+
+# Jetbrain config
+.idea
