@@ -51,6 +51,7 @@ nav:
     - hello-kubernetes/section02/pod-namespce.md
     - hello-kubernetes/section02/pod-requests-limits.md
     - hello-kubernetes/section02/service-ingress.md
+    - hello-kubernetes/section02/replicaset-deployment.md
     - hello-kubernetes/section02/readiness-liveness-probe.md
     - hello-kubernetes/section02/secrets-configmap.md
     - 핸즈온 실습:
