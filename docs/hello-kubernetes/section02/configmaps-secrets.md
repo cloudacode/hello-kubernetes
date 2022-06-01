@@ -12,7 +12,7 @@ image: https://raw.githubusercontent.com/cloudacode/hello-kubernetes/main/docs/a
 
 ConfigMap은 설정 정보를 하나 혹은 이상의 key/value 쌍으로 저장할 수 있으며, value는 단일 값이 될 수도 있고, 파일의 내용이 될 수도 있다.
 
-ConfigMap 예시를 보자. 
+ConfigMap manifest의 예시를 보자. 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
@@ -134,8 +134,64 @@ spec:
 !!!INFO 
     Nginx와 같은 웹서버의 설정 파일의 경우, 설정의 내용을 변경한다고 하더라도 웹서버에 직접 명령을 통해 설정을 다시 읽도록 해야 반영이 된다. Pod로 구성된 웹서버라면 ConfigMap으로 생성된 설정 파일이 변경되었을 때, Pod를 재생성하여 설정을 반영하는것이 효율적일 수 있다. 이런 경우라면, ConfigMap의 변경을 감시하지 않는 Immutable ConfigMap 으로 만들어 관리해볼 수 있다.
 
+### ConfigMap 의 제약사항
+* ConfigMap의 크기는 1MiB 로 제한된다. 
+
 ## Secrets
 
+Secret은 패스워드, API token 등과 같은 유출에 민감한 정보를 저장하기 위한 목적으로 설계되어있다.
+Application 에서 코드에 직접 민감한 정보를 저장하지 않고, Secret을 사용하여 Pod가 생성되는 시점에 전달할 수 있다.
+
+!!! warning  
+    Secret 리소스의 기본 저장은 etcd에 암호화하지 않은 상태로 저장한다.  
+    Secret 리소스를 암호화하여 저장하려면 저장 시 암호화(Encryption at rest)를 활성화하고, Encryption Provider 를 활용해서 데이터에 대해 암호화를 구성해야 한다.
+
+Secret은 `data` 혹은 `stringData` 필드에 데이터를 저장할 수 있다.  
+`data`로 저장하는 경우, key/value 중 value를 `base64`로 인코딩 해야 한다.
+
+### Secret 타입
+
+| Built-in Type                       | Usage                            |
+|-------------------------------------|----------------------------------|
+| Opaque                              | 임의이 사용자 지정 데이터                   |
+| kubernetes.io/service-account-token | Service Account 토큰               |
+| kubernetes.io/dockercfg             | 직렬화된 `./dockercfg` 파일            |
+| kubernetes.io/dockerconfigjson      | 직렬화된 `./docker/config.json` 파일   |
+| kubernetes.io/basic-auth            | Basic Authentication 용 credential |
+| kubernetes.io/ssh-auth              | SSH Authentication 용 credential  |
+| kubernetes.io/tls                   | TLS 인증서 형태의 데이터                  |
+| bootstrap.kubernetes.io/token       | 부트스트랩 토큰 데이터                     |
 
 
+### Secret 사용 예시
 
+Secret 은 아래와 같은 형식으로 정의할 수 있다.
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db-account
+type: Opaque
+data:
+  DB_ACCESS_ID: aGVsbG93b3JsZAo=
+  DB_ACCESS_PW: dGhpc2lzcGFzc3dvcmQK
+```
+
+Pod에서 위에 정의된 Secret 을 사용하려면 아래와 같이 사용이 가능하다. 
+Secret을 `envFrom` 구절을 이용해 Pod의 생성 시점에 Environment Variable로 저장할 수 있다.  
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: secret-test-pod
+spec:
+  containers:
+    - name: test
+      image: k8s.gcr.io/busybox
+      command: [ "/bin/sh", "-c", "env" ]
+      envFrom:
+      - secretRef:
+          name: db-account
+  restartPolicy: Never
+```
