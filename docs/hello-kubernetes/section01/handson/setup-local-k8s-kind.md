@@ -44,7 +44,7 @@ OS 패키지 매니저 혹은 바이너리를 통해서 설치를 진행
 
 Kind Cluster의 구성 정보를 코드화하여 관리할 수 있으며 여러 가지 기능들을 활성화할 수 있다. 원활한 실습을 위해 local cluster를 아래와 같이 컨트롤러 1개, 워커노드 3개로 클러스터를 구성하며 외부에서 ingress로 접근할 수 있도록 port mapping까지 기능을 활성화한다.
 
-kind-cluster-config.yaml
+[kind-cluster-config.yaml](../snippets/kind-cluster-config.yaml)
 ```yaml
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
@@ -70,7 +70,6 @@ nodes:
 - role: worker
 - role: worker
 - role: worker
-
 ```
 
 참고: [configuring your kind cluster](https://kind.sigs.k8s.io/docs/user/quick-start/#configuring-your-kind-cluster), [kind example config file](https://raw.githubusercontent.com/kubernetes-sigs/kind/main/site/content/docs/user/kind-example-config.yaml)
@@ -120,7 +119,7 @@ kind-worker3         Ready    <none>          10m     v1.24.0
 !!! INFO
     Service, Ingress는 기초적인 설정으로 진행, 추후 별도 실습에서 자세히 다룰 예정
 
-frontend-nginx.yaml
+[frontend-nginx.yaml](../snippets/frontend-nginx.yaml)
 ```yaml
 kind: Pod
 apiVersion: v1
