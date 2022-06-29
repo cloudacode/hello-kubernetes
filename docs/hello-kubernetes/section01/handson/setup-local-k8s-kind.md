@@ -148,7 +148,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: front-ingress
+  name: frontend-ingress
 spec:
   rules:
   - http:
