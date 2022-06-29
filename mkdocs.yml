@@ -46,7 +46,8 @@ nav:
     - hello-kubernetes/section01/what-is-container.md
     - hello-kubernetes/section01/what-is-kubernetes.md
     - 핸즈온 실습:
-      - hello-kubernetes/section01/install-kubernetes-eks.md
+      - hello-kubernetes/section01/handson/setup-local-k8s-kind.md
+      - hello-kubernetes/section01/handson/setup-cloud-k8s-eks.md
   - 2. Fundamentals:
     - hello-kubernetes/section02/pod-namespce.md
     - hello-kubernetes/section02/pod-requests-limits.md
