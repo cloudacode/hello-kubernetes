@@ -1,12 +1,12 @@
 ---
-title: 핸즈온. Kubernetes 구성 - AWS EKS
-description: Amazon EKS로 대규모 컨테이너 운영 환경을 만들고 서비스(Container)를 배포 배포 해보는 실습
+title: 핸즈온. 쿠버네티스 환경 구성(cloud) - AWS EKS
+description: Amazon EKS로 쿠버네티스 환경을 구성하고 애플리케이션을 배포 해보는 실습
 image: https://raw.githubusercontent.com/cloudacode/hello-kubernetes/main/docs/assets/kubernetes-school.png
 ---
 
-# 핸즈온. Kubernetes 구성 - AWS EKS
+# 핸즈온. 쿠버네티스 환경 구성(cloud) - AWS EKS
 
-**EKS로 환경 구성 및 어플리케이션 배포 실습**
+**EKS 환경 구성 및 애플리케이션 배포 실습**
 
 이번 실습은 Amazon EKS로 대규모 컨테이너 운영 환경을 만들고 서비스(Container)를 배포 배포 해보는 실습 입니다. AWS에서 쿠버네틱스 서비스인 EKS에 대해 배워 보고 컨테이너 서비스 배포를 위한 기본 작업들을 이해 할 수 있습니다.
 
