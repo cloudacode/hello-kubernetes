@@ -50,6 +50,8 @@ data:
 #### ConfigMap의 정보를 환경변수로 정의하기
 이전에 설명한 ConfigMap 예시에 있는 정보의 일부를 Pod를 생성할 때 환경 변수로 읽는 방법이다.
 
+![ConfigMap](assets/pod-configmap-env-var.jpg)
+
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -88,6 +90,8 @@ spec:
 
 #### ConfigMap의 정보를 파일 혹은 디렉토리로 마운트하기
 이 방법은 가장 흔하게 사용할 수 있는 ConfigMap을 전달하는 방법 중 하나로, 웹서버의 설정파일 등을 파일 혹은 디렉토리 형식으로 Pod에 전달할 수 있다.
+
+![ConfigMap](assets/pod-configmap-mount.jpg)
 
 ```yaml
 apiVersion: apps/v1
@@ -178,7 +182,10 @@ data:
 ```
 
 Pod에서 위에 정의된 Secret 을 사용하려면 아래와 같이 사용이 가능하다. 
-Secret을 `envFrom` 구절을 이용해 Pod의 생성 시점에 Environment Variable로 저장할 수 있다.  
+Secret을 `envFrom` 구절을 이용해 Pod의 생성 시점에 Environment Variable로 저장할 수 있다.
+
+![Secret](assets/pod-secret-env-var.jpg)
+
 
 ```yaml
 apiVersion: v1
@@ -195,3 +202,8 @@ spec:
           name: db-account
   restartPolicy: Never
 ```
+
+### Secret 보호
+* Kubernetes 에서는 Secret을 필요로하는 Pod가 있는 Node에만 Secret 정보가 전달되도록 설계되어있다.
+* Kubelet은 Secret을 Node의 `tmpfs`(가상메모리 공간)에 저장하여 disk에 영구적으로 기록되지 않도록 한다.
+* Pod에 2개 이상의 Container가 있는 경우, 명시적으로 mount 하는 container에서만 secret을 조회할 수 있다.    
