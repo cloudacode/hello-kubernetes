@@ -174,18 +174,59 @@ kubectl get pods -l app=nginx
 
 ### 접근 확인
 
-Service 타입을 기본 ClusterIP로 두고 외부 노출을 Ingress를 통해 하였으므로 다음과 같이 Endpoint를 Ingress 레벨에서 확인 가능
+아직 Load Balancer나 Ingress Controller를 구성하지 않았기 때문에 Port-Forwarding을 통해서 직접 포트를 열어서 접근하여 접속이 잘 되는지를 확인해야 한다.
+
+#### Port-Forwarding을 통한 접근 확인
+
+frontend-service 서비스가 정상적으로 만들어 졌는지 확인 후
 ```bash
-kubectl get ingress
+kubectl get service/frontend-service
+
+NAME               TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+frontend-service   ClusterIP   10.96.1.81   <none>        80/TCP    10m
 ```
 
-Output
+Port-Forwarding 설정을 통해서 local 환경에서 쿠버네티스 서비스 포트로 직접 연결을 시도
+
 ```bash
+kubectl port-forward service/frontend-service 8080:80
+
+Forwarding from 127.0.0.1:8080 -> 80
+Forwarding from [::1]:8080 -> 80
+```
+
+!!! info
+    로컬환경에서 80포트가 다른 프로세스에서 이미 사용 중일 수 있으며 포트 오픈을 위해 권한이 필요할 수 있기 때문에 8080으로 설정 하였다
+
+Endpoint [localhost:8080](http://localhost:8080) 접근 확인 및 브라우져로 기본 nginx 페이지가 정상적으로 보이는지 확인
+
+
+#### (옵션) Ingress-nginx를 구성 및 접근 확인
+
+매번 포트포워딩으로 접근 확인을 하는 것이 매우 번거롭기 때문에 외부의 트레픽을 서비스로 포워딩 시키기 위해 Ingress-Nginx를 구성한다. (2. Fundamentals 핸즈온에서 ingress-nginx에 대해 자세히 다룰 예정)
+
+ingress-nginx 설치 진행 
+```bash
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+```
+
+ingress-nginx controller가 정상적으로 기동하고 있는지 확인
+```bash
+kubectl get pods -n ingress-nginx -l app.kubernetes.io/component=controller
+
+NAME                                        READY   STATUS    RESTARTS   AGE
+ingress-nginx-controller-5458c46d7d-qjscg   1/1     Running   0          2m
+```
+
+위 frontend-nginx.yaml에서 service 타입을 기본 ClusterIP로 두고 외부 노출을 Ingress를 통해 하였으므로 다음과 같이 Endpoint를 Ingress 레벨에서 확인 가능
+```bash
+kubectl get ingress
+
 NAME               CLASS    HOSTS   ADDRESS     PORTS   AGE
 frontend-ingress   <none>   *       localhost   80      68s
 ```
 
-Endpoint [localhost:80](http://localhost:80) 접근 확인 및 브라우져로 기본 Nginx 페이지가 정상적으로 보이는지 확인
+Endpoint [localhost:80](http://localhost:80) 접근 확인 및 브라우져로 기본 nginx 페이지가 정상적으로 보이는지 확인
 
 ## Clean Up
 실습 완료 후 kind cluster 삭제
