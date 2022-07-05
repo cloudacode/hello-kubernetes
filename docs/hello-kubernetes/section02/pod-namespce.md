@@ -28,6 +28,14 @@ image: https://raw.githubusercontent.com/cloudacode/hello-kubernetes/main/docs/a
 | Unknown  | 어떤 이유로 컨테이너 상태가 확인되지 않고 노드에서 Pod의 상태 확인을 위한 접속이 되지 않는 상태 |
 | CrashLoopBackOff  | 컨테이너 시작이 지속해서 실패하고 있으며 일반적으로 이미지의 문제가 있거나 환경 변수 설정 등의 이슈로 컨테이너가 정상적으로 시작되지 않는 상태 |
 
+```bash
+$ kubectl run tmp-nginx --image nginx --port=80
+
+$ kubectl port-forward pod/tmp-nginx 8000:80
+
+$ curl 127.0.0.1:8000 
+```
+
 ## Namespace
 
 하나의 쿠버네티스 클러스터에 하나의 서비스 혹은 하나의 팀이 사용하는 경우보다는 멀티 테넌트 하게(여러 서비스가 혼재되어) 다양한 팀 혹은 사용자들이 리소스를 공유하여 클러스터를 사용하는 사례가 매우 일반적이다. 서비스 혹은 팀 간에 독립된 공간을 할당할 필요가 있으며 이때 Namespace를 통해서 서비스별 리소스를 논리적으로 나누고 관리 할 수 있다. 하지만 실제 Pod가 생성되는 Worker node는 공유가 되는 영역이기 때문에 self-service 된 형태로 리소스를 생성하고 관리를 한다고 하면 각 namespace 별로 quota를 부여하여 사용하는 리소스를 soft/hard limit으로 관리 하고 사용자 접근에 대해 [RBAC(Role Based Access Controller)](https://kubernetes.io/docs/reference/access-authn-authz/rbac/)로 관리하는 것이 추후 리소스 관리의 측면에서보다 효과적이다. 또한 namespace에도 label이 가능하므로 label을 통해 그룹화 가능하다.
