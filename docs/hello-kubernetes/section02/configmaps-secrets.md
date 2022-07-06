@@ -17,14 +17,14 @@ ConfigMap manifest의 예시를 보자.
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: helloworld-configs
+  name: sample-configs
 data:
   # 아래와 같이 간단한 key/value로 정의할 수 있다. 
-  default_ttl: 30
+  default_ttl: "30"
   say_hello: "Hi!"
   
   # 또는, 설정 file 내용을 value로 정의할 수도 있다.
-  helloworld-nginx.conf: |
+  sample-nginx.conf: |
     server {
       listen            80;
       index             index.html;
@@ -56,7 +56,7 @@ data:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: helloworld
+  name: sample
 spec:
   containers:
   - image: busybox
@@ -64,7 +64,7 @@ spec:
     - name: DEFAULT_TTL  # 환경변수 이름. 아래 ConfigMap key에 해당하는 value를 가진다. 
       valueFrom:
         configMapKeyRef:
-          name: helloworld-configs  # ConfigMap의 이름
+          name: sample-configs  # ConfigMap의 이름
           key: default_ttl         # ConfigMap에 정의된 key
 ```
 
@@ -75,7 +75,7 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: helloworld
+  name: sample
 spec:
   containers:
   - image: busybox
@@ -84,7 +84,7 @@ spec:
     - name: WELCOME_MESSAGE 
       valueFrom:
         configMapKeyRef:
-          name: helloworld-configs
+          name: sample-configs
           key: say_hello
 ```
 
@@ -111,12 +111,12 @@ spec:
   volumes:
     - name: nginx-vhost-config
       configMap:
-        name: helloworld-configs
+        name: sample-configs
         items:
-        - key: "helloworld-nginx.conf"
-          path: "helloworld-nginx.conf"
+        - key: "sample-nginx.conf"
+          path: "sample-nginx.conf"
 ```
-이렇게 선언된 Pod에서는 `/etc/nginx/conf.d/` 경로에 `helloworld-nginx.conf` 파일이 마운트되는 것을 확인할 수 있다.
+이렇게 선언된 Pod에서는 `/etc/nginx/conf.d/` 경로에 `sample-nginx.conf` 파일이 마운트되는 것을 확인할 수 있다.
 
 ### ConfigMap 의 변경 사항 반영
 생성되어있는 ConfigMap의 내용을 바꾸는 경우, ConfigMap을 Volume으로 마운트해서 사용하는 Pod에도 업데이트된 설정을 읽을 수 있다. 
