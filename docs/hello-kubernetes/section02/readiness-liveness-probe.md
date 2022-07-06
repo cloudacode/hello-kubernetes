@@ -10,6 +10,7 @@ image: https://raw.githubusercontent.com/cloudacode/hello-kubernetes/main/docs/a
 kubelet은 ***liveness probes***를 <u>컨테이너의 재시작할 시점(application의 deadlock등)을 알기 위해 사용</u>한다. application이 실행중이지만 진행 불가능 할때, 컨테이너를 재시작 하는것으로 어플리케이션의 가용성을 높힐수 있다. kubelet은 liveness probe handler를 이용하여 주기적으로 상태를 확인하며, 실패할 경우 pod를 종료한다(SIGTERM). liveness probe는 application이 잘못된 상태를 확인하고 복원한다.
 ![livenessprobe](assets/liveness-probe.jpeg)
 
+[liveness example](snippets/liveness-probe-http.yaml)
 ```yaml
 # ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 apiVersion: v1
@@ -45,6 +46,7 @@ spec:
 kubelet은 ***readiness probe***으로 <u>컨테이너가 트래픽을 받을수 있는 준비가 된 시점</u>을 확인한다. pod은 모든 컨테이너가 준비되면 트래픽을 받을 준비가 된것으로 생각한다. 이 신호의 용도는 어떤 pod이 서비스의 백엔드로 사용될지 제어하는것이다. pod이 준비되어 있지 않으면 service loadbalancer에서 제거한다.(endpoint 제거) readiness probe는 pod의 전체 life cycle동안 실행된다. 이것은 readiness probe가 pod가 실행되는 동안 반복적으로 실행되는것을 의미한다. 이 특징으로 application이 일시적으로 트래픽을 받지 못하는 상황의 처리도 가능하게 한다. 이러한 경우 application을 종료하는것이 아니고, 복구(조건이 만족될때)될때까지 기다린다.
 ![readinessprobe](assets/readiness-probe.jpeg)
 
+[readiness example](snippets/readiness-probe-tcp.yaml)
 ```yaml
 # ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 apiVersion: v1
@@ -79,6 +81,8 @@ spec:
 ## Startup
 kubelet은 ***startup probe***를 <u>컨테이너 어플리케이션이 시작된 시점</u>을 알기 위해 사용한다. 만약 이 probe가 설정되어있고, 그것의 liveness, readiness 가 startup probe가 성공할때까지 disable 이라면, 이 두 <u>probe가 어플리케이션 시작시 간섭하지 않는것을 확인</u>한다. 이것은 컨테이너 시작이 느려서 kubelet에 의해 올라오고 실행되기전에 죽는것을 피하기 위해  liveness check 적용시 사용된다. startup probe는 시작이 느린 컨테이너 또는 예측할수 없는 초기화 프로세스가 있는 application에 최적화되어 있다. ```failureThreshold * periodSeconds``` 만큼 liveness/readiness probe를 기다렸다가 startup probe가 성공하면 이후에 실행된다.
 ![startupprobe](assets/startup-probe.jpeg)
+
+[startup example](snippets/startup-probe-http.yaml)
 ```yaml
 apiVersion: v1
 kind: Pod
