@@ -58,6 +58,7 @@ nav:
     - 핸즈온 실습:
       - hello-kubernetes/section02/handson/s2-h1.md
       - hello-kubernetes/section02/handson/s2-h2.md
+      - hello-kubernetes/section02/handson/service-ingress.md
       - hello-kubernetes/section02/handson/configmaps-secrets.md
   - 3. Advanced:
     - hello-kubernetes/section03/pod-resource-advanced.md
