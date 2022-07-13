@@ -25,6 +25,29 @@ image: https://raw.githubusercontent.com/cloudacode/hello-kubernetes/main/docs/a
 * 템플릿화를 통해서 구성 정보를 간결하게 관리
 * 패키지 repo를 통해 손쉽고 간단하게 애플리케이션을 설치 및 업그레이드 
 
+## Helm Chart 활용법
+
+Helm의 패키징 포맷을 Chart라고 불리며 Kubernetes 리소스가 정의된 파일의 묶음 패키지이다. 단일 차트를 사용하여 단순한 HTTP 서버부터 데이터베이스, 캐시 등이 포함된 전체 웹 앱 스택과 같은 복잡한 것까지 손쉽게 배포할 수 있다. 
+
+Chart는 크게 메타데이터를 가지고 있는 Chart.yaml, 변수값 묶음의 values.yaml 그리고 template 디렉토리에 쿠버네티스 리소스의 manifest 파일을 담고 있다. 기존에 만들어진 Chart를 통해 배포를 하는 경우는 타겟 환경에 맞게 values.yaml의 값들만 수정을 하면 된다. 예를 들어 mysql의 설치 및 구성을 helm으로 진행한다고 가정하면 먼저 [artifact hub](https://artifacthub.io/packages/search?ts_query_web=mysql&sort=relevance&page=1) 혹은 애플리케이션 공식 github repo에서 helm chart를 검색하고 해당 repo를 추가한 후 values.yaml 파일을 검토 및 필요에 따라 수정을 한 후 설치를 진행하면 된다.
+
+```bash
+# repo 등록
+helm repo add bitnami https://charts.bitnami.com/bitnami
+
+# 환경에 맞게 vaules 값 수정
+# https://github.com/bitnami/charts/blob/master/bitnami/mysql/values.yaml
+
+# 설치
+helm install my-mysql bitnami/mysql -f values.yaml
+# 혹은 values에 변경사항이 없는 경우
+helm install my-mysql bitnami/mysql 
+```
+
+!!! INFO
+    개발사에서 공식적으로 Helm Chart를 지원하지 않고 bitnami와 같은 별도의 3rd party 밴더가 Chart를 메인터넌스 하는 경우도 많다. 이때 GitHub Star 개수나 얼마나 적극적으로 컨트리뷰션이 이루어지고 있는지를 보고 판단하는 것을 추천한다. 
+
+
 ## 추천 자료
 
 * Helm Overview
