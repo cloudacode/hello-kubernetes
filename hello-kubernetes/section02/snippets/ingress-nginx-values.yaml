@@ -1,0 +1,21 @@
+controller:
+  replicaCount: 1
+  nodeSelector:
+    ingress-ready: "true"
+  tolerations:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+    operator: Equal
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/control-plane
+    operator: Equal
+  ## if you want to bind ingress address as "localhost" instead of ingress-nginx-controller ClusterIP, please uncomment below lines
+  # publishService:
+  #   enabled: false
+  # extraArgs:
+  #   publish-status-address: "localhost"
+  watchIngressWithoutClass: true
+  hostPort:
+    enabled: true
+  service:
+    type: NodePort
