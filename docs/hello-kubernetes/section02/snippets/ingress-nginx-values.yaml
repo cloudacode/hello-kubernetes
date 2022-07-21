@@ -9,7 +9,7 @@ controller:
   - effect: NoSchedule
     key: node-role.kubernetes.io/control-plane
     operator: Equal
-  ## if you want to bind ingress address as "localhost" instead of ingress-nginx-controller ClusterIP, please uncomment below lines 
+  ## if you want to bind ingress address as "localhost" instead of ingress-nginx-controller ClusterIP, please uncomment below lines
   # publishService:
   #   enabled: false
   # extraArgs:
