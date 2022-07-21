@@ -56,7 +56,7 @@ service:
 
 ## Ingress란
 
-Ingress는 클러스터 외부에서 클러스터 내부 서비스로 HTTP와 HTTPS 경로를 노출하고 뒷단의 Service로 라우팅시켜주는 역할을 한다.
+Ingress는 클러스터 외부에서 클러스터 내부 서비스로 HTTP와 HTTPS 경로를 노출하고 뒷단의 Service로 라우팅시켜주는 트레픽 정책의 집합이며 Ingress Controller는 Ingress를 구현, 운영하기 위한 관리 시스템이다.
 ![ingress-controller](assets/ingress-controller.jpg)
 
 만약 클라우드 환경에서 쿠버네티스를 쓴다면 클라우드 프로바이더가 managed 형태로 제공해주는 인그래스 컨트롤러를 써도 좋다. 예를 들면 AWS에서 기본 Ingress는 ALB로 매핑이 되며, GCP는 기본으로 GCP HTTP(S) LoadBalancer로 연동이 된다. 이것은 클라우드 프로바이더가 관리해 주는 리소스이기 때문에 간편하게 사용 할 수 있다. 하지만 다양한 기능들을 커스텀하게 사용하고 싶다거나 self managed 할 수밖에 없는 상황인 경우는 다른 Ingress Controller를 고려해야 한다. 

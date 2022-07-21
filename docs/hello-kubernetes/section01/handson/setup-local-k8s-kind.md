@@ -20,7 +20,7 @@ kuberctl 설치: [관련 링크](https://kubernetes.io/docs/tasks/tools/)
 
 Docker Desktop 설치: [관련 링크](https://docs.docker.com/desktop/)
 
-!!! tip 
+!!! tip
     윈도우를 사용하는 경우는 `WSL` 기능을 활성화 하여 리눅스 워크스페이스에서 도커를 사용 하는 것을 추천 한다.
 
     [WSL 설치 가이드](https://docs.microsoft.com/ko-kr/windows/wsl/install)
@@ -43,6 +43,9 @@ OS 패키지 매니저 혹은 바이너리를 통해서 설치를 진행
 ### Cluster 설정
 
 Kind Cluster의 구성 정보를 코드화하여 관리할 수 있으며 여러 가지 기능들을 활성화할 수 있다. 원활한 실습을 위해 local cluster를 아래와 같이 컨트롤러 1개, 워커노드 3개로 클러스터를 구성하며 외부에서 ingress로 접근할 수 있도록 port mapping까지 기능을 활성화한다.
+
+!!! INFO
+    Worker node에도 ingress를 위한 HostPort Mapping을 할 수 있지만 실습에서 다른 워크로드에 의해 80, 443이 점유되고 있을 수 있기 떄문에 아래와 같이 `control node`만 활성화한다
 
 [kind-cluster-config.yaml](../snippets/kind-cluster-config.yaml)
 ```yaml
@@ -78,7 +81,7 @@ nodes:
 
 정의한 구성 정보(kind-cluster-config.yaml) 대로 cluster 생성
 ```
-$ kind create cluster --config kind-cluster-config.yaml 
+$ kind create cluster --config kind-cluster-config.yaml
 ```
 
 ### Kind Cluster 접속 확인
@@ -205,7 +208,7 @@ Endpoint [localhost:8080](http://localhost:8080) 접근 확인 및 브라우져�
 
 매번 포트포워딩으로 접근 확인을 하는 것이 매우 번거롭기 때문에 외부의 트레픽을 서비스로 포워딩 시키기 위해 Ingress-Nginx를 구성한다. (2. Fundamentals 핸즈온에서 ingress-nginx에 대해 자세히 다룰 예정)
 
-ingress-nginx 설치 진행 
+ingress-nginx 설치 진행
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
 ```
