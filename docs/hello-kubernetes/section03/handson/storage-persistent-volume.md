@@ -118,7 +118,7 @@ NAME                                   STATUS    VOLUME                         
 persistentvolumeclaim/data-pv-claim    Pending                                                                        standard        24s
 ```
 
-### 2.2 데모앱 배포
+### 2.2 Pod 배포 및 Volume 마운트
 
 위에서 요청한 PVC를 BusyBox 파드에 마운트
 
