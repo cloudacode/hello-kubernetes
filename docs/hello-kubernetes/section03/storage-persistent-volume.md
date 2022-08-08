@@ -44,8 +44,8 @@ spec:
       storage: 5Gi
 ```
 
-High-level Kubernetes archetypes integrated with CSI:
 ![csi-diagram](https://d33wubrfki0l68.cloudfront.net/f32751c5b6d79e7d48c2822f06faafe121ed48c6/2f3b2/images/blog/2018-08-02-dynamically-expand-volume-csi/csi-diagram.png)
+[High-level Kubernetes archetypes integrated with CSI](https://kubernetes.io/blog/2018/08/02/dynamically-expand-volume-with-csi-and-kubernetes/)
 
 ### Access Modes & Claim Lifecycle
 

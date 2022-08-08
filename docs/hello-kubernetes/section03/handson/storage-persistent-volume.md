@@ -1,10 +1,10 @@
 ---
-title: 핸즈온 3.2 Persistent Volume & Claim
+title: 핸즈온 3.2 Persistent Volume
 description: Persistent Volume 구성 및 Pod에 생성한 볼륨을 마운트 해보는 실습
 image: https://raw.githubusercontent.com/cloudacode/hello-kubernetes/main/docs/assets/kubernetes-school.png
 ---
 
-# 핸즈온 3.2 Persistent Volume & Claim
+# 핸즈온 3.2 Persistent Volume
 
 **Persistent Volume 구성 및 Pod에 생성한 볼륨을 마운트 해보는 실습**
 
@@ -20,14 +20,11 @@ Kubernetes Volume 이해: [관련 링크](../storage-persistent-volume.md)
 
 Ephemeral과 Persistent Volume을 각각 구성하고 Pod에 해당 볼륨을 마운트
 
-![]()
-
-!!! INFO
-    Kind 클러스터 환경에서는 기본으로 [local-path-provisioner](https://github.com/rancher/local-path-provisioner)가 Dynamic Provisioner로 구성이 되어 있어 별도의 CSI Provisioner를 구성할 필요가 없다. 해당 리소스는 `local-path-storage` 네임스페이스에 구성 되어 있다.
+![storage-persistent-ephemeral](../assets/storage-persistent-ephemeral.jpg)
 
 ## 1 Ephemeral Volume
 
-EmptyDir
+임시로 데이터를 적재해야 하는 볼륨을 만들기 위해 볼륨 속성을 [emptyDir](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir)로 선언한다
 
 ### 1.1 EmptyDir 설정
 
@@ -54,6 +51,10 @@ spec:
     emptyDir: {}
 ```
 
+```bash
+kubectl apply -f busybox-emptydir.yaml
+```
+
 ### 1.2 Volume 확인
 
 ```bash
@@ -67,6 +68,10 @@ kubectl get pods/busybox-sleep-1000 -o jsonpath='{.spec.nodeName}'
 
 Pod가 기동중인 Node에서 실제 emptyDir이 만들어져 컨테이너에서 임의로 생성한 파일이 보이는지 확인
 ```bash
+# 워커노드 접근을 위한 docker 명령어
+docker exec -it $(kubectl get pods/busybox-sleep-1000 -o jsonpath='{.spec.nodeName}') /bin/bash
+```
+```bash
 root@kind-worker3:/# ls -al /var/lib/kubelet/pods/fd0b963c-3ef0-4ebb-be52-258f935f161b/volumes/kubernetes.io~empty-dir/empty-data/
 total 12
 drwxrwxrwx 2 root root 4096 Aug  3 20:31 .
@@ -76,15 +81,16 @@ root@kind-worker3:/# cat /var/lib/kubelet/pods/fd0b963c-3ef0-4ebb-be52-258f935f1
 abcd
 ```
 
-Pod 삭제, 재생성시 볼륨이 초기화 되어 있는지 확인
+Pod 삭제, 재생성시 빈 볼륨으로 붙는지 확인
 
 ```bash
-
+kubectl delete pod/busybox-sleep-1000
+kubectl apply -f busybox-emptydir.yaml
 ```
 
 ## 2 Persistent Volume
 
-Kind 클러스터에서는 Dynamic Provisoner(local-path-provisioner)가 기본으로 구성이 되어 있다
+데이터를 영구적으로 보관을 위해서는 Persistent Volume을 사용해야 하며 직접 Static 하게 PVC와 PV를 바인딩시켜주는 방법도 있지만 CSI Provider를 통해서 Dynamic 하게 매핑을 시킬 수도 있다. Kind 클러스터 환경에서는 기본으로 [local-path-provisioner](https://github.com/rancher/local-path-provisioner)가 Dynamic Provisioner로 구성이 되어 있어 별도의 CSI Provisioner를 구성할 필요가 없다. 해당 리소스는 `local-path-storage` 네임스페이스에 구성 되어 있다.
 
 ### 2.1 Persistent Volume Claim 구성
 
@@ -101,6 +107,10 @@ spec:
   resources:
     requests:
       storage: 1Gi
+```
+
+```bash
+kubectl apply -f busybox-data-pvc.yaml
 ```
 
 !!! INFO
@@ -144,6 +154,10 @@ spec:
       claimName: data-pv-claim
 ```
 
+```bash
+kubectl apply -f busybox-pv.yaml
+```
+
 Pod 배포시 Dynamic하게 PV까지 생성되어 PVC에 Bound 된 것을 확인
 
 ```bash
@@ -163,12 +177,15 @@ Pod의 Data 디렉토리에 임시 파일 생성
 kubectl exec -it busybox-sleep-1000 -- /bin/sh -c "echo abcd > /data/test.txt"
 ```
 
-## 3. 접근 확인
+### 2.3 Volume 확인
 
-파드가 생성된 워커 노드에 접근하여 local-path-provisioner 볼륨에 PV가 생성되어 파일이 접근 되는지 확인
+파드가 생성된 워커 노드에 접근하여 local-path-provisioner 디렉토리에 PV 폴더가 생성되어 생성한 임시 파일이 있는지 확인
 
 ```bash
+# Pod가 기동중인 Node 확인
 kubectl get pods/busybox-sleep-1000 -o jsonpath='{.spec.nodeName}'
+# 워커노드 접근을 위한 docker 명령어
+docker exec -it $(kubectl get pods/busybox-sleep-1000 -o jsonpath='{.spec.nodeName}') /bin/bash
 ```
 
 ```bash
@@ -186,7 +203,7 @@ kubectl delete pod/busybox-sleep-1000
 kubectl apply -f busybox-pv.yaml
 ```
 
-기존에 작성한 임시 파일이 영구적으로 남아 있는지 확인:
+Pod를 삭제하더라도 기존에 작성한 임시 파일이 영구적으로 남아서 읽고 쓰기가 가능한지 확인:
 **Pod는 삭제 되었더라도 Volume은 삭제 하지 않았기 때문에 데이터를 영구적으로 관리 가능**
 
 ```bash
@@ -201,7 +218,7 @@ drwxr-xr-x    1 root     root          4096 Aug  3 22:38 ..
 -rw-r--r--    1 root     root             6 Aug  3 22:07 test.txt
 ```
 
-## 4 Clean Up
+## Clean Up
 실습 완료 후 kind cluster 삭제
 ```
 kind delete cluster
