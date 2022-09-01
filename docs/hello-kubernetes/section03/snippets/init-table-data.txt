@@ -1,0 +1,16 @@
+-- Database: `primary_db`
+
+-- Table structure for table `test`
+
+CREATE TABLE test (
+        id INTEGER NOT NULL AUTO_INCREMENT,
+        content VARCHAR(255) NOT NULL,
+        PRIMARY KEY (id)
+) ;
+
+-- Dumping data for table `test`
+
+INSERT INTO `test` (
+    `content`)
+    values
+    ('first');
