@@ -72,6 +72,7 @@ nav:
     - 핸즈온 실습:
       - hello-kubernetes/section03/handson/s3-h1.md
       - hello-kubernetes/section03/handson/storage-persistent-volume.md
+      - hello-kubernetes/section03/handson/statefulset.md
   - 4. Production:
       - hello-kubernetes/section04/k8-essential-components.md
       - hello-kubernetes/section04/ingress-nginx.md
