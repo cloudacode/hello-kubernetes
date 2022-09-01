@@ -144,6 +144,7 @@ Mariadb Cluster의 실제 워크로드인 MariaDB를 StatefulSet으로 배포
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
+  namespace: mariadb
   name: mariadb
 spec:
   serviceName: "mariadb-service"
