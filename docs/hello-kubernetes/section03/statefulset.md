@@ -22,7 +22,7 @@ image: https://raw.githubusercontent.com/cloudacode/hello-kubernetes/main/docs/a
 spec:
   persistentVolumeClaimRetentionPolicy:
     whenDeleted: Retain # StatefulSet이 삭제될 때 동작
-    whenScaled: Delete # replica 수 scale donw 때 동작
+    whenScaled: Delete # replica 수 scale down 때 동작
 ```
 - 파드의 번호, 호스트네임, SRV 레코드와 A 레코드이름은 변경되지 않지만 파드의 IP 주소는 변경될 수 있기 때문에 IP가 아닌 DNS로 질의 할 수 있도록 [Headless 서비스](https://kubernetes.io/docs/concepts/services-networking/service/#headless-services)가 필요 (ex, web-0.nginx)
 ```yaml
