@@ -62,6 +62,7 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
+  namespace: mariadb
   name: mariadb
 spec:
   serviceName: "mariadb-service"
