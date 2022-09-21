@@ -63,7 +63,7 @@ nav:
       - hello-kubernetes/section02/handson/service-ingress.md
       - hello-kubernetes/section02/handson/configmaps-secrets.md
   - 3. Advanced:
-    - hello-kubernetes/section03/s3-c1.md
+    - hello-kubernetes/section03/horizontal-pod-autoscaling.md
     - hello-kubernetes/section03/storage-persistent-volume.md
     - hello-kubernetes/section03/statefulset.md
     - hello-kubernetes/section03/s3-c4.md
