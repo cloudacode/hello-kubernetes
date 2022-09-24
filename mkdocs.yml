@@ -64,14 +64,14 @@ nav:
       - hello-kubernetes/section02/handson/service-ingress.md
       - hello-kubernetes/section02/handson/configmaps-secrets.md
   - 3. Advanced:
-    - hello-kubernetes/section03/s3-c1.md
+    - hello-kubernetes/section03/horizontal-pod-autoscaling.md
     - hello-kubernetes/section03/storage-persistent-volume.md
     - hello-kubernetes/section03/statefulset.md
     - hello-kubernetes/section03/s3-c4.md
     - hello-kubernetes/section03/s3-c5.md
     - hello-kubernetes/section03/pod-resource-advanced.md
     - 핸즈온 실습:
-      - hello-kubernetes/section03/handson/s3-h1.md
+      - hello-kubernetes/section03/handson/horizontal-pod-autoscaling.md
       - hello-kubernetes/section03/handson/storage-persistent-volume.md
       - hello-kubernetes/section03/handson/statefulset.md
   - 4. Production:
