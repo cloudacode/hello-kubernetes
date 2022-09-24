@@ -13,6 +13,11 @@ HPA controller라는 컨트롤러 컴포넌트가 Metric Server에 수집된 메
 
 ![horizontal-pod-autoscaler](./assets/hpa.jpg)
 
+쿠버네티스 v1.23 부터 적용되는 [HPA v2](https://github.com/kubernetes/design-proposals-archive/blob/main/autoscaling/hpa-v2.md)에서는 CPU, Memory 외에도 custom metric을 지원한다. 만약 쿠버네티스 영역 밖에 있는 리소스의 metric을 가지고 auto scaling을 해야 한다면 [KEDA](https://keda.sh/)를 통해서 연동할 수 있다.
+
+!!! TIP
+    KEDA를 통해 Prometheus의 커스텀 메트릭(특정 URL Path)을 바탕으로 AutoScaling 설정하는 방법: [Autoscale Kubernetes pods based on ingress request — Prometheus, KEDA, and K6](https://blog.cloudacode.com/how-to-autoscale-kubernetes-pods-based-on-ingress-request-prometheus-keda-and-k6-84ae4250a9f3)
+
 HPA는 DaemonSet과 같은 크기 조절이 불가능한 오브젝트에는 적용할 수 없으며 수평적 확장이므로 할당된 CPU 혹은 Memory 크기를 늘려야 하는 수직적 확장이 필요한 경우는 [Vertical Pod Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler#install-command) CRD(custom resource definition)를 클러스터에 추가하여 사용할 수 있다.
 
 ## 알고리즘
