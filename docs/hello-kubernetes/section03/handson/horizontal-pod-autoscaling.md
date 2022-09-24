@@ -151,7 +151,7 @@ nginx   Deployment/nginx   0%/10%    1         5         1          16m
 ```
 
 !!! INFO
-    만약 CPU가 아닌 custom metric을 기준으로 HPA를 수행 하고 싶다면 다음 튜토리얼을 참고 한다. https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics
+    HPA v2로 custom metric을 기준으로 autoscaling을 수행하고 싶다면 다음 튜토리얼을 참고:  [autoscaling-on-multiple-metrics-and-custom-metrics](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/#autoscaling-on-multiple-metrics-and-custom-metrics)
 
 ## 4 HPA 동작 검증
 
