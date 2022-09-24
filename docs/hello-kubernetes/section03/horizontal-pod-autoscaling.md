@@ -17,7 +17,7 @@ HPA는 DaemonSet과 같은 크기 조절이 불가능한 오브젝트에는 적�
 
 ## 알고리즘
 
-기본적인 관점에서 HorizontalPodAutoscaler 컨트롤러는 원하는 메트릭 값(desired)과 현재 메트릭 값(current) 간의 비율을 계산하여 동작 하게 된다.
+HPA 컨트롤러는 원하는 메트릭 값(desired)과 현재 메트릭 값(current) 간의 비율을 계산하여 동작 하게 된다.
 
 ```
 desired replicas
@@ -26,6 +26,17 @@ desired replicas
 
 !!!INFO
     ceil() 함수는 올림하여 주어진 숫자보다 크거나 같은 정수를 반환 한다
+
+[podautoscaler/replica_calculator.go](https://github.com/kubernetes/kubernetes/blob/master/pkg/controller/podautoscaler/replica_calculator.go#L141-L145)
+
+```go
+newReplicas := int32(math.Ceil(newUsageRatio * float64(len(metrics))))
+if (newUsageRatio < 1.0 && newReplicas > currentReplicas) || (newUsageRatio > 1.0 && newReplicas < currentReplicas) {
+    // return the current replicas if the change of metrics length would cause a change in scale direction
+    return currentReplicas, utilization, rawUtilization, timestamp, nil
+}
+```
+
 
 예를 들어 현재 메트릭 값이 200m이고 원하는 값이 100m이면 복제본 수는 200.0 / 100.0 == 2.0이므로 두 배가 확장이 되며 현재 값이 대신 50m이면 50.0 / 100.0 == 0.5가 되므로 복제본 수를 절반으로 줄이고 비율이 1.0에 가깝게 되면 모든 스케일링이 더 이상 일어나지 않게 된다.
 
