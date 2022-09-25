@@ -56,33 +56,42 @@ nav:
     - hello-kubernetes/section02/service-ingress.md
     - hello-kubernetes/section02/deployment-replicaset.md
     - hello-kubernetes/section02/readiness-liveness-probe.md
-    - hello-kubernetes/section02/configmaps-secrets.md
+    - hello-kubernetes/section02/configmap-secret.md
     - 핸즈온 실습:
-      - hello-kubernetes/section02/handson/s2-h1.md
-      - hello-kubernetes/section02/handson/s2-h2.md
+      - hello-kubernetes/section02/handson/pod.md
       - hello-kubernetes/section02/handson/resource-qos.md
       - hello-kubernetes/section02/handson/service-ingress.md
-      - hello-kubernetes/section02/handson/configmaps-secrets.md
+      - hello-kubernetes/section02/handson/deployment.md
+      - hello-kubernetes/section02/handson/configmap-secret.md
   - 3. Advanced:
     - hello-kubernetes/section03/horizontal-pod-autoscaling.md
     - hello-kubernetes/section03/storage-persistent-volume.md
     - hello-kubernetes/section03/statefulset.md
     - hello-kubernetes/section03/s3-c4.md
     - hello-kubernetes/section03/s3-c5.md
-    - hello-kubernetes/section03/pod-resource-advanced.md
     - 핸즈온 실습:
       - hello-kubernetes/section03/handson/horizontal-pod-autoscaling.md
       - hello-kubernetes/section03/handson/storage-persistent-volume.md
       - hello-kubernetes/section03/handson/statefulset.md
-  - 4. Production:
-      - hello-kubernetes/section04/k8-essential-components.md
-      - hello-kubernetes/section04/ingress-nginx.md
+  - 4. Core Interface(TODO):
+      - hello-kubernetes/section04/container-network-interface.md
+      - hello-kubernetes/section04/container-storage-interface.md
+      - hello-kubernetes/section04/container-resource-interface.md
+      - hello-kubernetes/section04/coredns.md
+  - 5. Mgmt Component(WIP):
+      - hello-kubernetes/section05/k8-essential-components.md
+      - hello-kubernetes/section05/ingress-nginx.md
       - Cloud Provider:
-        - hello-kubernetes/section04/s4-c1.md
-        - hello-kubernetes/section04/s4-c2.md
+        - hello-kubernetes/section05/s5-c1.md
+        - hello-kubernetes/section05/s5-c2.md
       - Mgmt Service:
-        - hello-kubernetes/section04/keda-hpa.md
-        - hello-kubernetes/section04/s4-c4.md
-  - 기타 자료:
+        - hello-kubernetes/section05/keda-hpa.md
+        - hello-kubernetes/section05/s5-c4.md
+  - 6. Istio(TODO):
+      - hello-kubernetes/section06/istio-introduction.md
+      - hello-kubernetes/section06/servicemesh.md
+  - 7. Etc:
+      - hello-kubernetes/section99/pod-resource-advanced.md
+  - 외부 링크:
     - Blog ⧉: https://medium.com/@cloudacode
     - Youtube ⧉: https://www.youtube.com/channel/UCw46J_QQ3-HrjPsSsuOSDdQ

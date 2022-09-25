@@ -1,5 +1,5 @@
 ---
-title: 3.x Deep dive in k8s Pod resources
+title: Deep dive in k8s Pod resources
 description:
 image:
 ---
