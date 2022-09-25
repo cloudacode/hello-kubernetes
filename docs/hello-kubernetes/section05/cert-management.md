@@ -6,6 +6,8 @@ image: https://raw.githubusercontent.com/cloudacode/hello-kubernetes/main/docs/a
 
 # 5.5 Certificate Management
 
-## External DNS
+## Let's Encrypt
+
+[letsencrypt](https://letsencrypt.org/)
 
 TODO

@@ -83,6 +83,7 @@ nav:
       - hello-kubernetes/section05/ingress-controller.md
       - hello-kubernetes/section05/monitoring.md
       - hello-kubernetes/section05/dns-management.md
+      - hello-kubernetes/section05/cert-management.md
       - hello-kubernetes/section05/secret-management.md
       - hello-kubernetes/section05/continuous-deployment.md
       - hello-kubernetes/section05/backup-management.md
