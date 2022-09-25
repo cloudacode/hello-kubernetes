@@ -73,25 +73,30 @@ nav:
       - hello-kubernetes/section03/handson/horizontal-pod-autoscaling.md
       - hello-kubernetes/section03/handson/storage-persistent-volume.md
       - hello-kubernetes/section03/handson/statefulset.md
-  - 4. Core Interface(TODO):
+  - 4. Core(TODO):
       - hello-kubernetes/section04/container-network-interface.md
       - hello-kubernetes/section04/container-storage-interface.md
       - hello-kubernetes/section04/container-resource-interface.md
       - hello-kubernetes/section04/coredns.md
   - 5. Mgmt Component(WIP):
       - hello-kubernetes/section05/k8-essential-components.md
-      - hello-kubernetes/section05/ingress-nginx.md
-      - Cloud Provider:
-        - hello-kubernetes/section05/s5-c1.md
-        - hello-kubernetes/section05/s5-c2.md
-      - Mgmt Service:
-        - hello-kubernetes/section05/keda-hpa.md
-        - hello-kubernetes/section05/s5-c4.md
+      - hello-kubernetes/section05/ingress-controller.md
+      - hello-kubernetes/section05/monitoring.md
+      - hello-kubernetes/section05/dns-management.md
+      - hello-kubernetes/section05/secret-management.md
+      - hello-kubernetes/section05/continuous-deployment.md
+      - hello-kubernetes/section05/backup-management.md
   - 6. Istio(TODO):
-      - hello-kubernetes/section06/istio-introduction.md
-      - hello-kubernetes/section06/servicemesh.md
-  - 7. Etc:
+      - hello-kubernetes/section06/istio-architecture.md
+      - hello-kubernetes/section06/traffic-management.md
+      - hello-kubernetes/section06/service-mesh.md
+      - hello-kubernetes/section06/security-observability.md
+  - 7. Managed Kubernetes(WIP):
+      - hello-kubernetes/section07/aws-eks.md
+      - hello-kubernetes/section07/gcp-gke.md
+  - 8. Tip and Tricks(TODO):
       - hello-kubernetes/section99/pod-resource-advanced.md
+      - hello-kubernetes/section99/troubleshooting-runbook.md
   - 외부 링크:
     - Blog ⧉: https://medium.com/@cloudacode
     - Youtube ⧉: https://www.youtube.com/channel/UCw46J_QQ3-HrjPsSsuOSDdQ
