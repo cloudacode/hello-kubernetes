@@ -1,10 +1,10 @@
 ---
-title: 핸즈온 2.4 Service & Ingress
+title: 핸즈온 2.3 Service & Ingress
 description: 쿠버네티스 환경에서 ingress-nginx 구성 및 Ingress를 통해 Service에 접근을 해보는 실습
 image: https://raw.githubusercontent.com/cloudacode/hello-kubernetes/main/docs/assets/kubernetes-school.png
 ---
 
-# 핸즈온 2.4 Service & Ingress
+# 핸즈온 2.3 Service & Ingress
 
 **Ingress-nginx 구성 및 Ingress를 통해 Service 접근 실습**
 
