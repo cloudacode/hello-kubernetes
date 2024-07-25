@@ -70,3 +70,5 @@ site/
 
 # Jetbrain config
 .idea
+
+.DS_Store
