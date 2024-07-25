@@ -51,12 +51,10 @@ Kind Cluster의 구성 정보를 코드화하여 관리할 수 있으며 여러 
 ```yaml
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
-# 1 control plane node and 3 workers
+# 1 control plane node and 3 workers with v1.30
 nodes:
-# the control plane node config
 - role: control-plane
-  # create cluster with extraPortMappings
-  # https://kind.sigs.k8s.io/docs/user/ingress/#create-cluster
+  image: kindest/node:v1.30.2
   kubeadmConfigPatches:
   - |
     kind: InitConfiguration
@@ -71,8 +69,11 @@ nodes:
     hostPort: 443
     protocol: TCP
 - role: worker
+  image: kindest/node:v1.30.2
 - role: worker
+  image: kindest/node:v1.30.2
 - role: worker
+  image: kindest/node:v1.30.2
 ```
 
 참고: [configuring your kind cluster](https://kind.sigs.k8s.io/docs/user/quick-start/#configuring-your-kind-cluster), [kind example config file](https://raw.githubusercontent.com/kubernetes-sigs/kind/main/site/content/docs/user/kind-example-config.yaml)
