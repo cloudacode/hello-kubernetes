@@ -90,7 +90,7 @@ $ kind create cluster --config kind-cluster-config.yaml
 정상적인 output
 ```
 Creating cluster "kind" ...
- ✓ Ensuring node image (kindest/node:v1.24.0) 🖼
+ ✓ Ensuring node image (kindest/node:v1.30.2) 🖼
  ✓ Preparing nodes 📦 📦 📦 📦
  ✓ Writing configuration 📜
  ✓ Starting control-plane 🕹️
