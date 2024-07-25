@@ -1,0 +1,8 @@
+global:
+  storageClass: "standard"
+master:
+  persistence:
+    size: 50Mi
+replica:
+  persistence:
+    size: 50Mi

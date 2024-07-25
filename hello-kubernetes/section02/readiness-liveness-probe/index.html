@@ -1,0 +1,2278 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Introduces the process of building various applications in the cloud environment and improving development procedures with DevOps culture.">
+      
+      
+        <meta name="author" content="kcfigaro@gmail.com, juner84s@gmail.com, steven.hj.shim@gmail.com">
+      
+      
+        <link rel="canonical" href="https://cloudacode.com/hello-kubernetes/hello-kubernetes/section02/readiness-liveness-probe/">
+      
+      
+        <link rel="prev" href="../deployment-replicaset/">
+      
+      
+        <link rel="next" href="../configmap-secret/">
+      
+      
+      <link rel="icon" href="../../../assets/application-brackets-black.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.30">
+    
+    
+      
+        <title>2.5 Readiness & Liveness Probe - 쿠버네티스 스쿨</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.3cba04c6.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-L86XX3YR79"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-L86XX3YR79",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-L86XX3YR79",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+  
+  
+  
+  
+    
+    
+    
+  
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="2.5 Readiness & Liveness Probe - 쿠버네티스 스쿨" />
+  <meta property="og:description" content="None" />
+  <meta property="og:url" content="https://cloudacode.com/hello-kubernetes/hello-kubernetes/section02/readiness-liveness-probe/" />
+  <meta property="og:image" content="https://raw.githubusercontent.com/cloudacode/hello-kubernetes/main/docs/assets/kubernetes-school.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#liveness-readiness-and-startup-probes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="쿠버네티스 스쿨" class="md-header__button md-logo" aria-label="쿠버네티스 스쿨" data-md-component="logo">
+      
+  <img src="../../../assets/application-brackets-outline.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            쿠버네티스 스쿨
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              2.5 Readiness & Liveness Probe
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/cloudacode/hello-kubernetes" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cloudacode/hello-kubernetes
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="쿠버네티스 스쿨" class="md-nav__button md-logo" aria-label="쿠버네티스 스쿨" data-md-component="logo">
+      
+  <img src="../../../assets/application-brackets-outline.png" alt="logo">
+
+    </a>
+    쿠버네티스 스쿨
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/cloudacode/hello-kubernetes" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    cloudacode/hello-kubernetes
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    1. Get started
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            1. Get started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section01/what-is-container/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.1 컨테이너란 무엇인가
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section01/what-is-kubernetes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.2 쿠버네티스의 이해
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section01/what-is-helm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.3 헬름이란 무엇인가
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    핸즈온 실습
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            핸즈온 실습
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section01/handson/setup-local-k8s-kind/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    핸즈온. 쿠버네티스 환경 구성(local) - Kind
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section01/handson/setup-cloud-k8s-eks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    핸즈온. 쿠버네티스 환경 구성(cloud) - AWS EKS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section01/handson/setup-redis-via-helm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    핸즈온. Helm으로 Redis Cluster 환경 구성 및 배포
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    2. Fundamentals
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            2. Fundamentals
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pod-namespce/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.1 Pod & Namespace
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pod-requests-limits/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.2 Resources & QoS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../service-ingress/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.3 Service & Ingress
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment-replicaset/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.4 Deployment & ReplicaSet
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    2.5 Readiness & Liveness Probe
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    2.5 Readiness & Liveness Probe
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#liveness" class="md-nav__link">
+    <span class="md-ellipsis">
+      Liveness
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#readiness" class="md-nav__link">
+    <span class="md-ellipsis">
+      Readiness
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#startup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Startup
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#podspec-probe" class="md-nav__link">
+    <span class="md-ellipsis">
+      PodSpec에 포함되어 있는 Probe
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probe-handler-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      Probe handler type
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Probe handler type">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exec-execaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      exec - ExecAction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tcp-tcpsocketaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      tcp - TCPSocketAction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpget-httpgetaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      httpget - HTTPGetAction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grpc-grpcaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      grpc - GRPCAction
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-probes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configure Probes
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configmap-secret/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.6 ConfigMap & Secret
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_7" id="__nav_3_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    핸즈온 실습
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_7">
+            <span class="md-nav__icon md-icon"></span>
+            핸즈온 실습
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../handson/pod/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    핸즈온 2.1 Pod
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../handson/resource-qos/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    핸즈온 2.2 Resources & QoS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../handson/service-ingress/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    핸즈온 2.3 Service & Ingress
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../handson/deployment/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    핸즈온 2.4 Deployment
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../handson/configmap-secret/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    핸즈온 2.6 Configmap & Secret
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    3. Advanced
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            3. Advanced
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section03/horizontal-pod-autoscaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.1 HPA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section03/storage-persistent-volume/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.2 Volumes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section03/statefulset/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.3 StatefulSet
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section03/s3-c4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.4 Taints &amp; Tolerations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section03/s3-c5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.5 Affinity
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    핸즈온 실습
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            핸즈온 실습
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section03/handson/horizontal-pod-autoscaling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    핸즈온 3.1 Horizontal Pod Autoscaling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section03/handson/storage-persistent-volume/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    핸즈온 3.2 Persistent Volume
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section03/handson/statefulset/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    핸즈온 3.3 StatefulSet
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    4. Core(TODO)
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            4. Core(TODO)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section04/container-network-interface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4.1 Container Network Interface
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section04/container-storage-interface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4.2 Container Storage Interface
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section04/container-resource-interface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4.3 Container Resource Interface
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section04/coredns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4.4 CoreDNS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    5. Mgmt Component(WIP)
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            5. Mgmt Component(WIP)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section05/k8-essential-components/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5.1 Essential Mgmt Components Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section05/ingress-controller/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5.2 Ingress Controller
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section05/monitoring/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5.3 Monitoring
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section05/dns-management/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5.4 DNS Management
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section05/cert-management/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5.5 Certificate Management
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section05/secret-management/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5.6 Secret Management
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section05/continuous-deployment/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5.7 Continuous Deployment
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section05/backup-management/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5.8 Backup Management
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    6. Istio(TODO)
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            6. Istio(TODO)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section06/istio-architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6.1 Istio Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section06/traffic-management/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6.2 Traffic Management
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section06/service-mesh/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6.3 Service Mesh
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section06/security-observability/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6.4 Security & Observability
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    7. Managed Kubernetes(WIP)
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            7. Managed Kubernetes(WIP)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section07/aws-eks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7.1 AWS EKS Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section07/gcp-gke/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7.2 GCP GKE Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    8. Tip and Tricks(TODO)
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            8. Tip and Tricks(TODO)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section99/pod-resource-advanced/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deep dive in k8s Pod resources
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../section99/troubleshooting-runbook/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshooting runbook
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    외부 링크
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            외부 링크
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://medium.com/@cloudacode" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blog ⧉
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://www.youtube.com/channel/UCw46J_QQ3-HrjPsSsuOSDdQ" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Youtube ⧉
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#liveness" class="md-nav__link">
+    <span class="md-ellipsis">
+      Liveness
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#readiness" class="md-nav__link">
+    <span class="md-ellipsis">
+      Readiness
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#startup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Startup
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#podspec-probe" class="md-nav__link">
+    <span class="md-ellipsis">
+      PodSpec에 포함되어 있는 Probe
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#probe-handler-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      Probe handler type
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Probe handler type">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exec-execaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      exec - ExecAction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tcp-tcpsocketaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      tcp - TCPSocketAction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpget-httpgetaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      httpget - HTTPGetAction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grpc-grpcaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      grpc - GRPCAction
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-probes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configure Probes
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="liveness-readiness-and-startup-probes">Liveness, Readiness and Startup Probes</h1>
+<h2 id="liveness">Liveness</h2>
+<p>kubelet은 <strong><em>liveness probes</em></strong>를 <u>컨테이너의 재시작할 시점(application의 deadlock등)을 알기 위해 사용</u>한다. application이 실행중이지만 진행 불가능 할때, 컨테이너를 재시작 하는것으로 어플리케이션의 가용성을 높힐수 있다. kubelet은 liveness probe handler를 이용하여 주기적으로 상태를 확인하며, 실패할 경우 pod를 종료한다(SIGTERM). liveness probe는 application이 잘못된 상태를 확인하고 복원한다.
+<img alt="livenessprobe" src="../assets/liveness-probe.jpeg" /></p>
+<p><a href="../snippets/liveness-probe-http.yaml">liveness example</a></p>
+<pre><code class="language-yaml"># ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    test: liveness
+  name: liveness-http
+spec:
+  containers:
+  - name: liveness
+    image: k8s.gcr.io/liveness
+    args:
+    - /server
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+        httpHeaders:
+        - name: Custom-Header
+          value: Awesome
+      initialDelaySeconds: 3
+      periodSeconds: 3
+</code></pre>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>위 yaml은 단독 컨테이너를 갖는 pod에서 livenessProbe를 설정한 내용
+periodSeconds는 kubelet이 매 3초마다 liveness probe가 실행되는것을 정의한다.
+initialDelaySeconds는 kubelet이 첫 probe 실행전에 대기하기 위한 시간(단위: sec)을 명시한다.
+kubelet이 probe를 실행하면, kubelet은 http handler를 사용하여 GET request를 서버로 보내고,
+지정한 path를 통해 success가 돌아오면 healthy. failure가 돌아오면 컨테이너를 종료하고 재시작한다.</p>
+</div>
+<h2 id="readiness">Readiness</h2>
+<p>kubelet은 <strong><em>readiness probe</em></strong>으로 <u>컨테이너가 트래픽을 받을수 있는 준비가 된 시점</u>을 확인한다. pod은 모든 컨테이너가 준비되면 트래픽을 받을 준비가 된것으로 생각한다. 이 신호의 용도는 어떤 pod이 서비스의 백엔드로 사용될지 제어하는것이다. pod이 준비되어 있지 않으면 service loadbalancer에서 제거한다.(endpoint 제거) readiness probe는 pod의 전체 life cycle동안 실행된다. 이것은 readiness probe가 pod가 실행되는 동안 반복적으로 실행되는것을 의미한다. 이 특징으로 application이 일시적으로 트래픽을 받지 못하는 상황의 처리도 가능하게 한다. 이러한 경우 application을 종료하는것이 아니고, 복구(조건이 만족될때)될때까지 기다린다.
+<img alt="readinessprobe" src="../assets/readiness-probe.jpeg" /></p>
+<p><a href="../snippets/readiness-probe-tcp.yaml">readiness example</a></p>
+<pre><code class="language-yaml"># ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goproxy
+  labels:
+    app: goproxy
+spec:
+  containers:
+  - name: goproxy
+    image: k8s.gcr.io/goproxy:0.1
+    ports:
+    - containerPort: 8080
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    livenessProbe:
+      tcpSocket:
+        port: 8080
+      initialDelaySeconds: 15
+      periodSeconds: 20
+</code></pre>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>kubelet은 readinessProbe.initialDelaySeconds에 명시된 5초 뒤에 첫번째 readiness를 시작합니다.
+probe가 성공하면 pod이 ready된 것으로 status가 변경됩니다.
+kubelet은 periodSeconds에 명시된 10초 마다 검사를 진행합니다.
+livenessProbe도 명시된 내용대로 진행됩니다.</p>
+</div>
+<h2 id="startup">Startup</h2>
+<p>kubelet은 <strong><em>startup probe</em></strong>를 <u>컨테이너 어플리케이션이 시작된 시점</u>을 알기 위해 사용한다. 만약 이 probe가 설정되어있고, 그것의 liveness, readiness 가 startup probe가 성공할때까지 disable 이라면, 이 두 <u>probe가 어플리케이션 시작시 간섭하지 않는것을 확인</u>한다. 이것은 컨테이너 시작이 느려서 kubelet에 의해 올라오고 실행되기전에 죽는것을 피하기 위해  liveness check 적용시 사용된다. startup probe는 시작이 느린 컨테이너 또는 예측할수 없는 초기화 프로세스가 있는 application에 최적화되어 있다. <code>failureThreshold * periodSeconds</code> 만큼 liveness/readiness probe를 기다렸다가 startup probe가 성공하면 이후에 실행된다.
+<img alt="startupprobe" src="../assets/startup-probe.jpeg" /></p>
+<p><a href="../snippets/startup-probe-http.yaml">startup example</a></p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    test: startup
+  name: startup-probe-test
+spec:
+  containers:
+  - name: liveness
+    image: k8s.gcr.io/liveness
+    args:
+    - /server
+    startupProbe:
+      httpGet:
+        path: /healthz
+        port: liveness-port
+      failureThreshold: 30
+      periodSeconds: 10
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: liveness-port
+      failureThreshold: 1
+      periodSeconds: 10
+</code></pre>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>startupProbe에 명시되어 있는 failureThreshold * periodSeconds(300초) 최대 시간까지
+application이 시작될 시간을 확보할수 있다. startupProbe가 성공하면, livenessProbe가 바로 동작하여
+deadlock상태를 확인한다. startupProbe가 주어진 최대 시간동안 성공하지 못하면 컨테이너는 종료되고,
+restartPolicy에 맞게 동작한다.</p>
+</div>
+<h2 id="podspec-probe">PodSpec에 포함되어 있는 Probe</h2>
+<pre><code class="language-bash">spec.containers[].livenessProbe
+spec.containers[].readinessProbe
+spec.containers[].startupProbe
+</code></pre>
+<h2 id="probe-handler-type">Probe handler type</h2>
+<ul>
+<li><a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.23/#probe-v1-core">api document reference</a></li>
+</ul>
+<p>위에서 이야기한 probe는 컨테이너에서 kubelet에 의해 주기적으로 수행되는 진단이다. 이 진단을 수행하기 위해서 각 상황에 맞춰 아래의 handler를 사용할 수 있다. 아래의 각 핸들러에서 필요한 설정은 위 api doc에서 참고 가능하다.</p>
+<h3 id="exec-execaction">exec - ExecAction</h3>
+<ul>
+<li>지정한 커맨드를 컨테이너 내부에서 실행하여 상태를 판단함. 컨테이너 파일 시스템의 root(“/”)에서 실행함</li>
+<li>exit 0이면 healthy no-zero면 unhealthy</li>
+</ul>
+<h3 id="tcp-tcpsocketaction">tcp - TCPSocketAction</h3>
+<ul>
+<li>지정한 tcp socket 포트를 컨테이너에서 열려고 시도하여 상태를 판단함.</li>
+<li>커넥션이 생성되면 healty, 실패하면 unhealthy</li>
+</ul>
+<h3 id="httpget-httpgetaction">httpget - HTTPGetAction</h3>
+<ul>
+<li>지정한 포트, 호스트와 path를 가지고 http get 실행을 통해 상태를 판단함.</li>
+<li>응답의 status code가 200크고 400미만이면 healthy, 그외는 unhealthy</li>
+</ul>
+<h3 id="grpc-grpcaction">grpc - GRPCAction</h3>
+<ul>
+<li>alpha feature on v1.23 - feature gate에서 GRPC컨테이너Probe enable해야 함</li>
+<li>지정한 포트, 서비스 이름을 가지고 rpc check 요청을 보내서 상태를 판단함</li>
+<li>응답이 SERVING(OK)이면 healthy, 그 외는 unhealthy</li>
+</ul>
+<h2 id="configure-probes">Configure Probes</h2>
+<p>probe는 liveness/readiness의 확인 동작을 보다 정확하게 제어하기 위해 사용할수 있는 여러 필드가 있다.</p>
+<ul>
+<li>initialDelaySeconds: probe를 시작하기 전에 컨테이너가 시작할때 필요한 시간(초)이다. default 0</li>
+<li>periodSeconds: probe를 실행하는 빈도의 기간 시간(초)이다. default 10초, min 1초</li>
+<li>timeoutSeconds: probe를 실행한 후에 timeout 되는 시간(초)이다. default 1초, min 1초</li>
+<li>successThreshold: probe가 실패한 후에 성공한것으로 간주하는 최소의 연속된 성공의 수. default 1, min 1</li>
+<li>failureThreshold: probe가 실패하면 kubernete가 이 회수만큼 시도한 후에 포기함. livenessprobe의 경우, conatiner를 재시작하는것을 의미하고, readiness probe의 경우 Unready로 표기함. default 3, min 1</li>
+</ul>
+<p>위 probe 는 아래의 status를 가진다.</p>
+<ul>
+<li>Success: 컨테이너가 probe 를 통과함</li>
+<li>Failure: 컨테이너가 probe 를 실패함</li>
+<li>Unknown: probe가 실패하였다. (어떤 액션도 해서는 안된다. 그리고 kubelet이 추가 확인을 할것이다.)</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.fe8b6f2b.min.js"></script>
+      
+    
+  </body>
+</html>
